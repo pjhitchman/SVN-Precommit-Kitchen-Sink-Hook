@@ -613,6 +613,9 @@ sub check_properties {
     while ( my $property = <@properties> ) {	# Fetch the property for that file
 	next if $property eq "";
         next unless $property =~ s/^\s*//;
+	next if "properties" =~ /^\Q$property\E\z/i;	# Skip the svnlook header
+	next if "on" =~ /^\Q$property\E\z/i;		# to avoid E200017 error
+	next if $file =~ /\Q$property\E?/;		# from svnlook propget.
 	my $command = join ( " ",
 	    $configuration->Svnlook,
 	    SVNLOOK_PROPGET,
